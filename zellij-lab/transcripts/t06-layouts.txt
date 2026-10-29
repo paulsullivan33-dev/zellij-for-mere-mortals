@@ -1,0 +1,108 @@
+[started: zellij --session lab-layout --new-session-with-layout layouts/workbench.kdl]
+
+$ zellij --session lab-layout action list-tabs
+TAB_ID  POSITION  NAME
+0  0  Main
+1  1  Pair
+2  2  Worker
+[exit 0]
+
+$ zellij --session lab-layout action list-panes
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+terminal_1  terminal  Pane #1
+terminal_2  terminal  Pane #2
+terminal_3  terminal  sh -c echo worker-started; sleep 3600
+[exit 0]
+
+[the head of action dump-layout for this session:]
+
+layout {
+    cwd "/home/hatch/workspace/zellij-for-mere-mortals/zellij-lab"
+    tab name="Main" focus=true hide_floating_panes=true {
+        pane focus=true
+    }
+    tab name="Pair" hide_floating_panes=true {
+        pane split_direction="vertical" {
+
+[note: the tab holds one bare pane -- no tab-bar or status-bar, because the layout did not ask for them]
+
+[meanwhile, from a second shell: zellij --session lab-layout --layout layouts/extra-tab.kdl]
+
+$ zellij --session lab-layout action list-tabs   (after the add)
+TAB_ID  POSITION  NAME
+0  0  Main
+1  1  Pair
+2  2  Worker
+3  3  Extra
+[exit 0]
+
+[started again with workbench-with-bars.kdl, which adds a default_tab_template]
+
+$ zellij --session lab-bars action list-panes
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+terminal_1  terminal  Pane #1
+terminal_2  terminal  Pane #2
+terminal_3  terminal  sh -c echo worker-started; sleep 3600
+[exit 0]
+
+[list-panes looks the same -- with a client attached, the two bars are the client's own rendering and are not listed. The difference shows in the dump-layout below: each tab now carries a tab-bar and a status-bar pane, from the template]
+
+$ zellij ... action dump-screen   (the Worker tab)
+worker-started
+[exit 0]
+
+[saved action dump-layout to layouts/round-trip.kdl (45 lines); its head reads:]
+
+layout {
+    cwd "/home/hatch/workspace/zellij-for-mere-mortals/zellij-lab"
+    tab name="Main" hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane
+        pane size=1 borderless=true {
+
+[started a new session from the dumped layout]
+
+$ zellij --session lab-roundtrip action list-tabs
+TAB_ID  POSITION  NAME
+0  0  Main
+1  1  Pair
+2  2  Worker
+[exit 0]
+
+[started with layouts/broken.kdl (a missing closing brace); the client printed:]
+
+  × Failed to parse Zellij configuration
+   ╭─[/home/hatch/workspace/zellij-for-mere-mortals/zellij-lab/layouts/broken.kdl:1:8]
+ 1 │ ╭─▶ layout {
+ 2 │ │       tab name="Oops" {
+ 3 │ │           pane split_direction="vertical" {
+ 4 │ │               pane
+ 5 │ │       }
+ 6 │ ├─▶ }
+   · ╰──── Kdl Deserialization Error
+   ╰────
+  help: For more information, please see our configuration guide: https://zellij.dev/documentation/
+        configuration.html
+
+[client still running: True]
+$ zellij list-sessions   (after the broken layout)
+No active zellij sessions found.
+[exit 1]
+
+[copied the with-bars layout to /home/hatch/.config/zellij/layouts/workbench.kdl]
+
+[started: zellij --session lab-byname --new-session-with-layout workbench (a name, not a path)]
+
+$ zellij --session lab-byname action list-tabs
+TAB_ID  POSITION  NAME
+0  0  Main
+1  1  Pair
+2  2  Worker
+[exit 0]
+

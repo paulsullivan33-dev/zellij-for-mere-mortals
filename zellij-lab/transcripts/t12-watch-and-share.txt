@@ -1,0 +1,16 @@
+[client one attached and typed: echo written-by-the-first-client]
+
+[a second connection attached with: zellij watch lab-shared,
+ and typed the same kind of line]
+
+$ zellij --session lab-shared action dump-screen
+# echo written-by-the-first-client
+written-by-the-first-client
+#
+[exit 0]
+
+$ zellij --session lab-shared action list-clients
+CLIENT_ID ZELLIJ_PANE_ID RUNNING_COMMAND
+1         terminal_0     N/A
+[exit 0]
+

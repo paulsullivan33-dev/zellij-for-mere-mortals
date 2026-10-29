@@ -1,0 +1,28 @@
+site_name: Zellij for Mere Mortals
+site_description: A terminal multiplexer that divides one window into panes and tabs, keeps your sessions running after you close the window or lose your connection, rebuilds arrangements from plain text layout files, and can bring a session back after a crash, with the limits stated plainly.
+site_url: https://paulsullivan33-dev.github.io/zellij-for-mere-mortals/
+copyright: 'Part of <a href="https://paulsullivan33-dev.github.io/mere-mortals/">For Mere Mortals</a> · Text <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, code MIT'
+
+# Guides live at the repo root (nice for GitHub browsing).
+# The deploy workflow copies them into docs/ before building.
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - What Zellij Is: what-zellij-is.md
+  - The Moving Parts: the-moving-parts.md
+  - Installing Zellij: installing-zellij.md
+  - Your First Session: your-first-session.md
+  - Layouts: layouts.md
+  - Panes and Tabs: panes-and-tabs.md
+  - Modes and Keys: modes-and-keys.md
+  - Configuring Zellij: configuring-zellij.md
+  - Sessions — Leaving, Returning, and Surviving a Crash: sessions.md
+  - Plugins and the Web Server: plugins-and-the-web.md
+  - Recipes: recipes.md
+  - The Neighbours: the-neighbours.md
+  - Limits: limits.md
+  - Troubleshooting: troubleshooting.md
+  - Glossary: glossary.md
+  - Writing Criteria: criteria.md

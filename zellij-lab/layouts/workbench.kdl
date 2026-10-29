@@ -1,0 +1,16 @@
+layout {
+    tab name="Main" {
+        pane
+    }
+    tab name="Pair" {
+        pane split_direction="vertical" {
+            pane
+            pane
+        }
+    }
+    tab name="Worker" {
+        pane command="sh" {
+            args "-c" "echo worker-started; sleep 3600"
+        }
+    }
+}

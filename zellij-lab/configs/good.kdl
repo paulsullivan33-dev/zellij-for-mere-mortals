@@ -1,0 +1,10 @@
+theme "nord"
+pane_frames false
+show_release_notes false
+show_startup_tips false
+
+keybinds {
+    normal {
+        bind "Alt w" { CloseFocus; }
+    }
+}

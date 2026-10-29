@@ -1,0 +1,17 @@
+[typed inside the session's own shell (the lab calls
+ the binary by its full path; on your machine, plain
+ 'zellij action ...' is the same thing):]
+
+  /home/hatch/workspace/zellij-for-mere-mortals/zellij-lab/tool/zellij action new-pane --direction down -- sh -c 'echo inner-pane; sleep 300'
+
+$ zellij --session lab-inside action list-panes
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+terminal_1  terminal  sh -c echo inner-pane; sleep 300
+[exit 0]
+
+$ dump-screen --pane-id terminal_1
+inner-pane
+[exit 0]
+

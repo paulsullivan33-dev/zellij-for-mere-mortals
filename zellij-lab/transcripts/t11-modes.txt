@@ -1,0 +1,124 @@
+[ran: seq 1 60 -- sixty numbered lines]
+
+$ zellij ... action dump-screen   (the tail of the output)
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+#
+[exit 0]
+
+[pressed Ctrl s for Scroll mode, then Ctrl b twice -- two pages back through the output]
+
+$ zellij ... action dump-screen   (scrolled up)
+# seq 1 60
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+[exit 0]
+
+[pressed Ctrl c -- back to the bottom and Normal mode]
+
+[locked with Ctrl g, then pressed Ctrl p, r -- the keys pane mode would have used to split]
+
+$ zellij ... action list-panes   (still locked)
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+[exit 0]
+
+[typed a command while still locked -- it went to the shell, as every key does in this mode]
+
+$ zellij ... action dump-screen
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+# ^Pr^C
+# echo typed-while-locked
+typed-while-locked
+#
+[exit 0]
+
+[unlocked with Ctrl g, pressed Ctrl p, r again]
+
+$ zellij ... action list-panes   (unlocked)
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+terminal_1  terminal  Pane #2
+[exit 0]
+

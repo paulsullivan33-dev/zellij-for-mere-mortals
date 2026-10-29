@@ -1,0 +1,124 @@
+$ zellij attach lab-life --create-background
+
+[exit 0]
+
+$ zellij list-sessions
+lab-life [Created 0s ago]
+[exit 0]
+
+$ zellij --session lab-life action list-panes
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+plugin_3  plugin  About Zellij
+terminal_0  terminal  Pane #1
+[exit 0]
+
+[the session and its panes exist with nobody attached]
+
+[attached, and typed: echo marker-before-detach]
+
+[pressed Ctrl o, then d -- detach]
+
+[client detached and gone: False]
+
+$ zellij list-sessions   (after detaching)
+lab-life [Created 6s ago]
+[exit 0]
+
+$ zellij --session lab-life action dump-screen   (after re-attaching)
+# echo marker-before-detach
+marker-before-detach
+# ^[
+[exit 0]
+
+$ zellij --session lab-life action rename-session lab-renamed
+
+[exit 0]
+
+$ zellij list-sessions
+lab-renamed [Created 8s ago]
+[exit 0]
+
+$ zellij kill-session lab-renamed
+
+[exit 0]
+
+$ zellij list-sessions   (after the kill)
+No active zellij sessions found.
+[exit 1]
+
+[gone entirely: a session you kill on purpose is not kept for resurrection]
+
+[renamed the tab to Keepsake with Ctrl t, r]
+
+$ zellij --session lab-crash action list-panes   (two terminal panes)
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+terminal_1  terminal  Pane #2
+[exit 0]
+
+$ zellij --session lab-crash action save-session
+
+[exit 0]
+
+[the saved state lives in /home/hatch/.cache/zellij/contract_version_1/session_info/lab-crash:]
+
+  session-layout.kdl
+  session-metadata.kdl
+
+[session-layout.kdl begins:]
+
+layout {
+    cwd "/home/hatch/workspace/zellij-for-mere-mortals/zellij-lab"
+    tab name="Keepsake" focus=true hide_floating_panes=true {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        pane split_direction="vertical" {
+            pane size="50%"
+            pane focus=true size="50%"
+
+[the server for lab-crash is process 38431; killing it with SIGKILL -- no cleanup, no warning]
+
+$ zellij list-sessions   (after the server's death)
+lab-crash [Created 1s ago] (EXITED - attach to resurrect)
+[exit 0]
+
+[attached to the dead session -- it resurrects]
+
+$ zellij --session lab-crash action list-tabs
+TAB_ID  POSITION  NAME
+0  0  Keepsake
+[exit 0]
+
+$ zellij --session lab-crash action list-panes
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+terminal_1  terminal  Pane #2
+[exit 0]
+
+$ zellij ... action dump-screen   (a resurrected pane)
+#
+[exit 0]
+
+[the layout and the tab's name came back; the shells are fresh -- what was on their screens is not part of what is saved by default]
+
+$ zellij delete-session lab-doomed   (still running)
+A session by the name "lab-doomed" exists and is active, use --force to delete it.
+[exit 1]
+
+$ zellij delete-session --force lab-doomed
+A session by the name "lab-doomed" exists and is active, but will be force killed and deleted.
+Session: "lab-doomed" not found.
+[exit 2]
+
+$ zellij delete-session lab-doomed   (already gone)
+Session: "lab-doomed" not found.
+[exit 2]
+
+$ zellij list-sessions   (at the end)
+No active zellij sessions found.
+[exit 1]
+

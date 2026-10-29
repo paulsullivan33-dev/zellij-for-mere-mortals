@@ -1,0 +1,72 @@
+$ zellij setup --check   (config lines only, before)
+
+[CONFIG DIR]: "/home/hatch/.config/zellij"
+[LOOKING FOR CONFIG FILE FROM]: "/home/hatch/.config/zellij/config.kdl"
+[CONFIG ERROR]: IoError: No such file or directory (os error 2), File: /home/hatch/.config/zellij/config.kdl. 
+
+[wrote the lab config to /home/hatch/.config/zellij/config.kdl:]
+
+theme "nord"
+pane_frames false
+show_release_notes false
+show_startup_tips false
+
+keybinds {
+    normal {
+        bind "Alt w" { CloseFocus; }
+    }
+}
+
+$ zellij setup --check   (config lines only, after)
+
+[CONFIG DIR]: "/home/hatch/.config/zellij"
+[LOOKING FOR CONFIG FILE FROM]: "/home/hatch/.config/zellij/config.kdl"
+[CONFIG FILE]: Well defined.
+
+$ zellij --session lab-config action list-panes
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+[exit 0]
+
+[no About or Release Notes pane: show_release_notes false did its job -- compare scenario A, where one appeared]
+
+$ ... list-panes   (after Alt n, the new-pane key)
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+terminal_1  terminal  Pane #2
+[exit 0]
+
+$ ... list-panes   (after Alt w, the config's own key)
+PANE_ID  TYPE  TITLE
+plugin_0  plugin  (.) - zellij:link
+terminal_0  terminal  Pane #1
+[exit 0]
+
+$ zellij --config configs/unknown-key.kdl setup --check
+
+[LOOKING FOR CONFIG FILE FROM]: "/home/hatch/workspace/zellij-for-mere-mortals/zellij-lab/configs/unknown-key.kdl"
+[CONFIG FILE]: Well defined.
+
+[banana_mode true is not a zellij option -- and nothing complains. Unknown keys are ignored.]
+
+$ zellij --config configs/syntax-error.kdl setup --check
+  × Failed to parse Zellij configuration
+   ╭─[/home/hatch/workspace/zellij-for-mere-mortals/zellij-lab/configs/syntax-error.kdl:2:13]
+ 1 │ theme "nord"
+ 2 │ pane_frames {
+   ·             ─┬
+   ·              ╰── Kdl Deserialization Error
+   ╰────
+  help: For more information, please see our configuration guide: https://
+        zellij.dev/documentation/configuration.html
+[exit 1]
+
+[starting a session with that config prints the same diagnostic, and:]
+
+$ zellij list-sessions
+No active zellij sessions found.
+[exit 1]
+
+[removed the lab config from the default location]
